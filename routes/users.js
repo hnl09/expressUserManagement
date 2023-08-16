@@ -51,4 +51,22 @@ router.delete('/:id', (req, res) => {
     res.send(`User ${userData.firstName} with id ${id} successfully deleted!`)
 })
 
+// Patch method
+router.patch('/:id', (req, res) => {
+    const { id } = req.params
+
+    const updatedInfo = req.body
+
+    let usertoBeUpdated = users.find((user) => (user.id === id))
+
+    if (!usertoBeUpdated) {
+        res.send(`User with id ${id} not found`)
+        return
+    }
+
+    let updatedUser = Object.assign(usertoBeUpdated, updatedInfo)
+    
+    res.send(`User with id ${id} updated!`)
+})
+
 export default router;
