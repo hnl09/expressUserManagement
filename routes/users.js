@@ -66,7 +66,7 @@ router.patch('/:id', (req, res) => {
 
     let updatedUser = Object.assign(usertoBeUpdated, updatedInfo)
     
-    res.send(`User with id ${id} updated!`)
+    res.send(`User with id ${id} successfully updated!`)
 })
 
 export default router;
