@@ -1,7 +1,7 @@
 {
   "name": "njs",
   "version": "1.0.0",
-  "description": "Building my first NodeJSAPI from https://www.youtube.com/watch?v=l8WPWK9mS5M&t=1088s&ab_channel=JavaScriptMastery",
+  "description": "NodeJS App for study purposes.",
   "main": "index.js",
   "type": "module",
   "scripts": {
