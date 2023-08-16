@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 // Mocking database
-const users = []
+let users = []
 
 // All routes in here are starting with /users
 
@@ -25,5 +25,30 @@ router.post('/', (req, res) => {
 
     res.send(`User ${user.firstName} successfully added to the database!`)
 });
+
+//  Get method to retrieve user with specific id
+router.get('/:id', (req, res) => {
+    const { id } = req.params // It gets the get params
+
+    const foundUser = users.find((user) => user.id === id);
+
+    res.send(foundUser)
+})
+
+// Delete method to remove user with specific id
+router.delete('/:id', (req, res) => {
+    const { id } = req.params
+
+    let userData = users.find((user) => (user.id === id))
+
+    if (!userData) {
+        res.send(`User with id ${id} not found`)
+        return
+    }
+
+    users = users.filter((user) => (user.id !== id))
+
+    res.send(`User ${userData.firstName} with id ${id} successfully deleted!`)
+})
 
 export default router;
