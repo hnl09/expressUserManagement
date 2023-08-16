@@ -1,72 +1,27 @@
 import express from 'express';
 
-//  Importing UUID
-import { v4 as uuidv4 } from 'uuid';
+// Importing methods
+import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/users.js'; // Always remember the js extension
+
 
 //  Initializing our Router
 const router = express.Router();
 
-// Mocking database
-let users = []
-
 // All routes in here are starting with /users
 
-// Creating get method
-router.get('/', (req, res) => {
-    res.send(users)
-});
+// Method to retrieve all users
+router.get('/', getUsers);
 
-//  Creating Post Method
-router.post('/', (req, res) => {
-    const user = req.body // I'ts the body json content
+// Method to create user
+router.post('/', createUser);
 
-    //  Pushing user to array db mock
-    users.push({ ...user, id: uuidv4() })
+// Method to retrieve specific user
+router.get('/:id', getUser)
 
-    res.send(`User ${user.firstName} successfully added to the database!`)
-});
+// Method to delete user
+router.delete('/:id', deleteUser)
 
-//  Get method to retrieve user with specific id
-router.get('/:id', (req, res) => {
-    const { id } = req.params // It gets the get params
-
-    const foundUser = users.find((user) => user.id === id);
-
-    res.send(foundUser)
-})
-
-// Delete method to remove user with specific id
-router.delete('/:id', (req, res) => {
-    const { id } = req.params
-
-    let userData = users.find((user) => (user.id === id))
-
-    if (!userData) {
-        res.send(`User with id ${id} not found`)
-        return
-    }
-
-    users = users.filter((user) => (user.id !== id))
-
-    res.send(`User ${userData.firstName} with id ${id} successfully deleted!`)
-})
-
-// Patch method
-router.patch('/:id', (req, res) => {
-    const { id } = req.params
-
-    const updatedInfo = req.body
-
-    let usertoBeUpdated = users.find((user) => (user.id === id))
-
-    if (!usertoBeUpdated) {
-        res.send(`User with id ${id} not found`)
-        return
-    }
-
-    let updatedUser = Object.assign(usertoBeUpdated, updatedInfo)
-    
-    res.send(`User with id ${id} successfully updated!`)
-})
+// Method to update user data
+router.patch('/:id', updateUser)
 
 export default router;
