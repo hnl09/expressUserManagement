@@ -19,11 +19,7 @@ export const pool = mysql.createPool({
     queueLimit: 0,
     enableKeepAlive: true,
     keepAliveInitialDelay: 0
-  }).promise();
-  
-// Query to users table
-const result = await pool.query("SELECT * FROM users")
-console.log(result[0])
+  }).promise();  
 
 // Importing users.js
 import usersRoutes from './routes/users.js'

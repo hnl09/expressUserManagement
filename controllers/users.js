@@ -1,12 +1,21 @@
 // Mocking database
 let users = []
 
+//  Importing DB
+import { pool } from '../index.js';
+
 //  Importing UUID
 import { v4 as uuidv4 } from 'uuid';
 
 // Method to retrieve all users
 export const getUsers = (req, res) => {
-    res.send(users)
+    pool.query("SELECT * FROM users")
+    .then(result => {
+        res.send(result[0]);
+    })
+    .catch(error => {
+        console.error('Error querying the database:', error);
+    });
 }
 
 // Method to create user
