@@ -39,12 +39,16 @@ export const getUser = (req, res) => {
 export const createUser = (req, res) => {
     const user = req.body // I'ts the body json content
 
+    const userUID = uuidv4()
+
     pool.query(`
     INSERT INTO users (id, firstName, lastName, age)
-    VALUES ('${uuidv4()}', ?, ?, ?)
+    VALUES ('${userUID}', ?, ?, ?)
     `, [user.firstName, user.lastName, user.age])
     .then(result => {
-        res.send(`User ${user.firstName} successfully added to the database!`);
+        pool.query(`SELECT * FROM users WHERE id = ?`, [userUID]).then(user => {
+            res.status(201).send(user[0]);  
+        })
     })
     .catch(error => {
         res.send(errorMsg);
