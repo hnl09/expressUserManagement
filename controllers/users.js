@@ -7,6 +7,8 @@ import { pool } from '../index.js';
 //  Importing UUID
 import { v4 as uuidv4 } from 'uuid';
 
+const errorMsg = 'Error, contact a developer for further details.'
+
 // Method to retrieve all users
 export const getUsers = (req, res) => {
     pool.query("SELECT * FROM users")
@@ -14,18 +16,9 @@ export const getUsers = (req, res) => {
         res.send(result[0]);
     })
     .catch(error => {
-        console.error('Error querying the database:', error);
+        res.send(errorMsg);
+        console.error(error);
     });
-}
-
-// Method to create user
-export const createUser = (req, res) => {
-    const user = req.body // I'ts the body json content
-
-    //  Pushing user to array db mock
-    users.push({ ...user, id: uuidv4() })
-
-    res.send(`User ${user.firstName} successfully added to the database!`)
 }
 
 // Method to retrieve specific user
@@ -37,9 +30,28 @@ export const getUser = (req, res) => {
         res.send(result[0]);
     })
     .catch(error => {
-        console.error('Error querying the database:', error);
+        res.send(errorMsg);
+        console.error(error);
     });
 }
+
+// Method to create user
+export const createUser = (req, res) => {
+    const user = req.body // I'ts the body json content
+
+    pool.query(`
+    INSERT INTO users (id, firstName, lastName, age)
+    VALUES ('${uuidv4()}', ?, ?, ?)
+    `, [user.firstName, user.lastName, user.age])
+    .then(result => {
+        res.send(`User ${user.firstName} successfully added to the database!`);
+    })
+    .catch(error => {
+        res.send(errorMsg);
+        console.error(error);
+    });
+}
+
 
 // Method to delete user
 export const deleteUser = (req, res) => {
