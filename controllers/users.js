@@ -32,9 +32,13 @@ export const createUser = (req, res) => {
 export const getUser = (req, res) => {
     const { id } = req.params // It gets the get params
 
-    const foundUser = users.find((user) => user.id === id);
-
-    res.send(foundUser)
+    pool.query("SELECT * FROM users WHERE id = ?", [id])
+    .then(result => {
+        res.send(result[0]);
+    })
+    .catch(error => {
+        console.error('Error querying the database:', error);
+    });
 }
 
 // Method to delete user
