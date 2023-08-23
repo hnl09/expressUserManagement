@@ -4,6 +4,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
+// Importing users.js
+import usersRoutes from './routes/users.js'
 dotenv.config()
 
 // Connecting DB with local variables
@@ -21,11 +23,6 @@ export const pool = mysql.createPool({
     keepAliveInitialDelay: 0
   }).promise(); 
   
- // const result = await pool.query(`SELECT * FROM users`)
- //  console.log(result)
-
-// Importing users.js
-import usersRoutes from './routes/users.js'
 
 // Instantiating Express
 const app = express();

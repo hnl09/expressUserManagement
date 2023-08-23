@@ -7,7 +7,7 @@ import { pool } from '../index.js';
 //  Importing UUID
 import { v4 as uuidv4 } from 'uuid';
 
-const errorMsg = 'Error, contact a developer for further details.'
+const errorMsg = 'Error, try again in a few minutes or contact a developer for further details.'
 
 // Method to retrieve all users
 export const getUsers = (req, res) => {
@@ -48,6 +48,9 @@ export const createUser = (req, res) => {
     .then(result => {
         pool.query(`SELECT * FROM users WHERE id = ?`, [userUID]).then(user => {
             res.status(201).send(user[0]);  
+        }).catch(error => {
+            res.send(errorMsg);
+            console.error(error);
         })
     })
     .catch(error => {
@@ -61,16 +64,24 @@ export const createUser = (req, res) => {
 export const deleteUser = (req, res) => {
     const { id } = req.params
 
-    let userData = users.find((user) => (user.id === id))
-
-    if (!userData) {
-        res.send(`User with id ${id} not found`)
-        return
-    }
-
-    users = users.filter((user) => (user.id !== id))
-
-    res.send(`User ${userData.firstName} with id ${id} successfully deleted!`)
+    pool.query(`SELECT * FROM users WHERE id = ?`, [id]).then(user => {
+        if(user[0].length !== 0) {
+            let firstName = user[0][0].firstName
+            pool.query("DELETE FROM users WHERE id = ?", [id])
+            .then(result => {
+                res.send(`User ${firstName} deleted`);
+            })
+            .catch(error => {
+                res.send(errorMsg);
+                console.error(error);
+            });
+        } else {
+            res.send('User not found')
+        }
+    }).catch(error => {
+        res.send(errorMsg);
+        console.error(error);
+    });
 }
 
 // Method to update user data
