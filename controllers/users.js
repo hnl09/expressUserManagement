@@ -1,6 +1,3 @@
-// Mocking database
-let users = []
-
 //  Importing DB
 import { pool } from '../index.js';
 
