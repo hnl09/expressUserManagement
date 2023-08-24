@@ -7,7 +7,7 @@ import { pool } from '../index.js';
 //  Importing UUID
 import { v4 as uuidv4 } from 'uuid';
 
-const errorMsg = 'Error, try again in a few minutes or contact a developer for further details.'
+const errorMsg = 'Error, try again in a few minutes or contact a developer for more details.'
 
 // Method to retrieve all users
 export const getUsers = (req, res) => {
