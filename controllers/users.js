@@ -14,8 +14,7 @@ export const getUsers = (req, res) => {
     pool.query("SELECT * FROM users")
     .then(result => {
         res.send(result[0]);
-    })
-    .catch(error => {
+    }).catch(error => {
         res.send(errorMsg);
         console.error(error);
     });
@@ -70,8 +69,7 @@ export const deleteUser = (req, res) => {
             pool.query("DELETE FROM users WHERE id = ?", [id])
             .then(result => {
                 res.send(`User ${firstName} deleted`);
-            })
-            .catch(error => {
+            }).catch(error => {
                 res.send(errorMsg);
                 console.error(error);
             });
@@ -90,19 +88,33 @@ export const updateUser = (req, res) => {
 
     const { firstName, lastName, age } = req.body
 
-    const user = users.find((user) => user.id === id)
+    pool.query(`SELECT * FROM users WHERE id = ?`, [id]).then(user => {
+        if(user[0].length !== 0) {
 
-    if(firstName) {
-        user.firstName = firstName
-    }
+            if(firstName) {
+                pool.query("UPDATE users SET firstName = ? WHERE id = ?", [firstName, id])
+            }
+        
+            if(lastName) {
+                pool.query("UPDATE users SET lastName = ? WHERE id = ?", [lastName, id])
+            }
+        
+            if(age) {
+                pool.query("UPDATE users SET age = ? WHERE id = ?", [age, id])
+            }
 
-    if(lastName) {
-        user.lastName = lastName
-    }
+            pool.query(`SELECT * FROM users WHERE id = ?`, [id]).then(user => {
+                res.status(200).send(user[0]);  
+            }).catch(error => {
+                res.send(errorMsg);
+                console.error(error);
+            })
 
-    if(age) {
-        user.age = age
-    }
-    
-    res.send(`User with id ${id} successfully updated!`)
+        } else {
+            res.send('User not found')
+        }
+    }).catch(error => {
+        res.send(errorMsg);
+        console.error(error);
+    });
 }
