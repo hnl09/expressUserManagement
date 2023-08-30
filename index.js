@@ -28,13 +28,19 @@ export const pool = mysql.createPool({
 const app = express();
 const PORT = 5000;
 
+//  Setting EJS
+app.set("view engine", "ejs")
+
 // This says we're going to be using JSON in our whole app
 app.use(bodyParser.json());
 
 // When /users is called will return usersRoutes file
 app.use('/users', usersRoutes);
 
-app.get('/', (req, res) => res.send('Hello from homepage'));
+app.get('/', (req, res) => res.render("index.ejs"));
+
+// Telling express to serve public folder
+app.use(express.static("public"))
 
 // Making app to listen on incoming requests
 app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
