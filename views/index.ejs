@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12 userData">
                 <h1>First Name: <%= responseData[0].firstName %></h1>
-                <h1>Last Name: <%= responseData[0].lasttName %></h1>
+                <h1>Last Name: <%= responseData[0].lastName %></h1>
                 <h1>Age: <%= responseData[0].age %></h1>
                 <% const parsed_date = new Date(responseData[0].created_at);
                 const formatted_date = parsed_date.toISOString().split('T')[0]; %>
