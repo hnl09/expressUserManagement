@@ -3,7 +3,6 @@ import express from 'express';
 // Importing methods
 import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/users.js'; // Always remember the js extension
 
-
 //  Initializing our Router
 const router = express.Router()
 

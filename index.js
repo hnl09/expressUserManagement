@@ -4,8 +4,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
-// Importing users.js
+// Importing routes
 import usersRoutes from './routes/users.js'
+import homepageRoute from './routes/homepage.js'
 dotenv.config()
 
 // Connecting DB with local variables
@@ -37,7 +38,7 @@ app.use(bodyParser.json());
 // When /users is called will return usersRoutes file
 app.use('/users', usersRoutes);
 
-app.get('/', (req, res) => res.render("index.ejs"));
+app.use('/', homepageRoute);
 
 // Telling express to serve public folder
 app.use(express.static("public"))
